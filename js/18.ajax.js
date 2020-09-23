@@ -1,0 +1,28 @@
+var scores = {
+	students: [
+		{
+			name:"dong",
+			kor: 95,
+			eng: 80,
+			math: 92
+		},
+		{
+			name:"sung",
+			kor: 90,
+			eng: 75,
+			math: 90
+		},
+		{
+			name:"man",
+			kor: 65,
+			eng: 85,
+			math: 88
+		},
+	],
+	total: 3
+}
+
+var scoresJSON = JSON.stringify(scores);
+
+console.log(scores);
+console.log(scoresJSON);
