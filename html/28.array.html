@@ -30,18 +30,88 @@
 
 	// Array.splice(작업할idx, 삭제하고 가져올 갯수, 추가할 값)
 	arr = ['a', 'b', 'c'];
-	console.log(arr.splice(1, 1), arr);
+	//console.log(arr.splice(1, 1), arr);
 
 	arr = ['딸기', '바나나', '멜론'];
 	arr.splice(1, 1, '포도');
-	console.log(arr); // ['딸기', '포도', '멜론']
+	//console.log(arr); // ['딸기', '포도', '멜론']
 
 	arr = ['딸기', '바나나', '멜론'];
 	arr.splice(2, 0, '포도', '자두', '수박');
-	console.log(arr); // ['딸기', '바나나', '포도', '자두', '수박', '멜론']
+	//console.log(arr); // ['딸기', '바나나', '포도', '자두', '수박', '멜론']
 
 	// Array.slice(시작idx, 직전idx) 기존배열을 건드리지 않고 새로운 배열로 추출
 	arr = ['딸기', '바나나', '포도', '자두', '수박', '멜론'];
 	var arr2 = arr.slice(2, 4);
-	console.log(arr, arr2);
+	//console.log(arr, arr2);
+
+	//Array.concat(연결한 배열)
+	var arr = ['딸기', '바나나', '포도'];
+	var arr2 = ['자두', '수박', '멜론'];
+	var arr3 = arr.concat(arr2);
+	//console.log(arr3);
+	
+	//배열의 성질
+	//primitive type
+	var a= 10;
+	var b = a;
+	a = 20;
+	//console.log(a, b);
+
+	//배열의 softcopy
+	var arr = ['딸기', '바나나', '포도'];
+	var arr2 = arr; //softcopy
+	//console.log(arr, arr2);
+	
+	arr.pop();
+	//console.log(arr, arr2);
+	
+	//배열의 hardcopy
+	var arr = ['딸기', '바나나', '포도'];
+	var arr2 = arr.slice(); 
+	//console.log(arr, arr2);
+	
+	arr.pop();
+	//console.log(arr, arr2);
+	
+	var arr = ['딸기', '바나나', '포도'];
+	var arr2 = arr.concat([]);
+	//console.log(arr, arr2); 
+
+	arr.pop();
+	//console.log(arr, arr2);
+
+	//배열의 정렬(sort)
+	var arr = ['a', 'c', 'b', 'f', 'e'];
+	arr.sort();
+	//console.log(arr);
+
+	var arr = [1,5,9,11,15,26];
+	arr.sort();
+	//console.log(arr);
+
+	arr.sort(function(a,b) {
+		return a - b;
+	});
+	//console.log(arr);
+
+	//
+	arr = ['딸기', '바나나', '포도', '자두', '수박', '멜론'];
+	var str = arr.toLocaleString();
+	//console.log(arr, str);
+
+	var str = "딸기,바나나,포도,자두,수박,멜론";
+	var arr = str.split(',');
+	//console.log(arr);
+
+	//split exam
+	var cart = '1/30000/2/60000,5/25000/3/75000';
+	var arr = cart.split(',');
+	//console.log(arr);
+
+	var prd = [];
+	prd[0] = arr[0].split('/');
+	prd[1] = arr[1].split('/');
+	console.log(prd);
+
 </script>
