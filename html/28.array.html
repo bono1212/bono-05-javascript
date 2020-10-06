@@ -172,6 +172,30 @@
 	var mapArr = arr.map(function(v){
 		return v % 2 == 0;
 	});
-	console.log(mapArr);
+	//console.log(mapArr);
+
+	var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+	var pointArr = arr.map(function(v){
+		return v + 100;
+	});
+	//console.log(pointArr);
+
+	var users = [
+		{id: 1, userid: "booldook", point: 1000, saleCount: 3, totalPrice: 35000},
+		{id: 2, userid: "booldook2", point: 2500, saleCount: 8, totalPrice: 25000},
+		{id: 3, userid: "booldook3", point: 700, saleCount: 4, totalPrice: 75000},
+		{id: 4, userid: "booldook4", point: 2000, saleCount: 3, totalPrice: 85000}
+	];
+	var pointUsers = users.map ( function(v){
+		v.point += 100;
+		return v;
+	});
+	//console.log(pointUsers);
+
+	var saleFour = users.filter(function(v){
+		return v.saleCount >= 4;
+	});
+	console.log(saleFour);
+
 
 </script>
