@@ -6,8 +6,9 @@
 	<title>Document</title>
 </head>
 <body>
-<!-- 	<div onClick="alert('Hello World'); console.log('hi'); location.href = 'https://naver.com'">네이버</div> -->
-
+	<div onClick="alert('Hello World'); console.log('hi'); location.href = 'https://naver.com'">네이버</div>
+	<input type="text" id="userpw">
+	<button id="btnSend">가입</button>
 <script>
 	var log = console.log
 	var str = 'Hello World Wide Web';
@@ -51,6 +52,24 @@
 
 	var newStr = str.replace(/wide/gi, "global"); //gi-tom jijig vseg yalgahq
 	console.log(newStr);
+
+	//정규표현식 맛보기
+	console.clear();
+	var str = '2who is who';
+	var regStr = str.replace(/who$/g, 'man');
+	console.log(regStr);
+
+	document.querySelector("#btnSend").addEventListener("click", function(){
+		var userpw = document.querySelector("#userpw").value;
+		//tom vseg jijig vseg too tusgai temdegt
+		/* var regExp = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/; */
+		
+		//이메일
+		var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+		if(regExp.test(userpw) > -1) alert("good job");
+		else alert("wrong");
+	});
+
 
 </script>
 </body>
