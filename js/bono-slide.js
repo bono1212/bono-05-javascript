@@ -1,11 +1,15 @@
 var Slide = function(arg) {
 	this.slides = arg.slide;
 	this.container = arg.container;
-	this.wrapper = $('<div class="bono-wrapper"></div>').appendTo($(this.container));
 	this.direction = arg.direction || 'hoti';
 	this.autostart = arg.autostart || false;
 	this.gapSpeed = arg.gapSpeed || 3000;
 	this.aniSpeed = arg.aniSpeed || 500;
+	$(this.container).css({
+		"position": "relative",
+		//"overflow": "hidden"
+	});
+	this.wrapper = $('<div class="bono-wrapper bono'+this.direction+'"></div>').appendTo($(this.container));
 	this.init();
 	return this;
 }
