@@ -33,8 +33,8 @@ Slide.prototype.init = function(){
 		this.$slides.push($(this.$slides[0].clone()).appendTo(this.$wrapper));
 		this.last = this.slide.length;
 	}
-this.$btnPrev = $(<div class="bono-btn bono-prev">〈</div>).appendTo(this.$container);
-this.$btnNext = $(<div class="bono-btn bono-next">〉</div>).appendTo(this.$container);
+this.$btnPrev = $('<div class="bono-btn bono-prev">〈</div>').appendTo(this.$container);
+this.$btnNext = $('<div class="bono-btn bono-next">〉</div>').appendTo(this.$container);
 	this.startInit();
 }
 
