@@ -1,8 +1,12 @@
 .bono-wrapper {width: 100%; position: relative;}
 .bono-wrapper .img {width: 100%;}
-.bono-wrapper.bono-hori {}
+.bono-wrapper.bono-hori {display: flex;}
 .bono-wrapper.bono-vert {}
 .bono-wrapper.bono-fade {}
-.bono-wrapper.bono-hori .bono-slide {}
+.bono-wrapper.bono-hori .bono-slide {flex: 100% 0 0;}
 .bono-wrapper.bono-vert .bono-slide {}
 .bono-wrapper.bono-fade .bono-slide {}
+
+.bono-wrapper .bono-btn {position: absolute; font-size: 10rem; color: #fff; text-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.5); top: 50%; transform: translateY(-50%); z-index: 9999;}
+.bono-btn .bono-prev {left: 1rem;}
+.bono-btn .bono-next {right: 1rem;}
