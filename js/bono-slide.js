@@ -1,0 +1,3 @@
+var Slide = function() {
+
+}
