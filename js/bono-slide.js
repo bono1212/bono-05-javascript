@@ -76,7 +76,14 @@ Slide.prototype.init = function(){
 	}
 
 	Slide.prototype.ani= function() {
-		this.$wrapper.stop().animate({"left": -100*this.now + "%"}, this.aniSpeed);
+		if(this.direction === 'hori') {
+			this.$wrapper.stop().animate({"left": -100*this.now + "%"}, this.aniSpeed);
+		}
+		else if (this.direction === 'vert') {
+			var hei = this.$slides[0].outerHeight();
+			this.$wrapper.stop().animate({"top": -hei*this.now + "px"}, this.aniSpeed);
+		}
 	}
 
 	//bvh js event n event ob-t bdag. 
+	// vert n % heregjihq (px) bh heregt

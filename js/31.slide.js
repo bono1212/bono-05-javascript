@@ -4,12 +4,12 @@ new Slide({
 	direction: "hori", //hori(default), vert, fade
 	autoStart: true,   //false(def), true
 	gapSpeed: 4000,    //3000(def)
-	aniSpeed: 750			 //500(def)
+	aniSpeed: 400			 //500(def)
 });
 
-/* new Slide({
+new Slide({
 	slide: ['../img/home-2.jpg', '../img/home-3.jpg', '../img/home-4.jpg'],
 	container: ".prd-stage",
-	direction: "fade", //hori(default), vert, fade
+	direction: "vert", //hori(default), vert, fade
 	autoStart: true,   //false(def), true
-}); */
+});
