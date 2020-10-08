@@ -7,6 +7,7 @@
 .bono-wrapper.bono-vert .bono-slide {}
 .bono-wrapper.bono-fade .bono-slide {}
 
-.bono-wrapper .bono-btn {position: absolute; font-size: 10rem; color: #fff; text-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.5); top: 50%; transform: translateY(-50%); z-index: 9999;}
-.bono-btn .bono-prev {left: 1rem;}
-.bono-btn .bono-next {right: 1rem;}
+.bono-btn {position: absolute; font-size: 10rem; color: #fff; text-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.5); top: 50%; transform: translateY(-50%); z-index: 9999; cursor: pointer; user-select: none; opacity: 0.2; transition: all 1s;}
+.bono-btn:hover {opacity: 1;}
+.bono-btn.bono-prev {left: 1rem;}
+.bono-btn.bono-next {right: 1rem;}

@@ -7,36 +7,76 @@ var Slide = function(arg) {
 	this.autoStart = arg.autoStart || false;
 	this.gapSpeed = arg.gapSpeed || 3000;
 	this.aniSpeed = arg.aniSpeed || 500;
-	this.$container.css({
-		"border": "1px solid red",
-		"position": "relative",
-		//"overflow": "hidden"
-	});
+	this.$container.css({"position": "relative", "overflow": "hidden"});
 	this.$wrapper = $('<div class="bono-wrapper bono-'+this.direction+'"></div>').appendTo(this.$container);
 	this.now = 0;
 	this.last = this.slide.length - 1;
-
+	
 	this.init();
 	return this;
 }
 
 Slide.prototype.init = function(){
 	var html = '';
-	for(var i=0; i<this.slide.length; i++) {
+	for(var i=0, html=''; i<this.slide.length; i++) {
 	html = '<div class="bono-slide">';
 	html += '<img src="'+this.slide[i]+'" class="img">';
 	html += '</div>';
 	this.$slides.push($(html).appendTo(this.$wrapper));
 	}
-	console.log(this.$slides);
+
 	if(this.direction === 'hori' || this.direction === 'vert') {
 		this.$slides.push($(this.$slides[0].clone()).appendTo(this.$wrapper));
-		this.last = this.slide.length;
 	}
-this.$btnPrev = $('<div class="bono-btn bono-prev">〈</div>').appendTo(this.$container);
-this.$btnNext = $('<div class="bono-btn bono-next">〉</div>').appendTo(this.$container);
+
+	this.last = this.$slides.length - 1;
+	this.$btnPrev = $('<div class="bono-btn bono-prev">〈</div>').appendTo(this.$container);
+	this.$btnNext = $('<div class="bono-btn bono-next">〉</div>').appendTo(this.$container);
+
+	this.$btnPrev.click(this.onPrevClick.bind(this)); //묶다 derh this bish oorig n zaj ogch bna
+	this.$btnNext.click(this.onNextClick.bind(this));
+	this.$container.mouseover(this.onMouseOver.bind(this));
+	this.$container.mouseleave(this.onMouseLeave.bind(this));
+	this.interval = setInterval(this.onInterval.bind(this), this.gapSpeed);
+	
 	this.startInit();
 }
 
-slide.prototype.startInit = function(){
-}
+	Slide.prototype.startInit = function(){
+		
+	}
+
+	Slide.prototype.onPrevClick = function(e){
+		if(this.now == 0) {
+			this.now = this.last - 1; 
+			this.$wrapper.css("left", -100*this.last+"%");
+		}
+		else this.now--;
+		this.ani();
+	}
+		
+	Slide.prototype.onNextClick = function(){
+		if(this.now == this.last) {
+			this.now = 1; 
+			this.$wrapper.css("left", 0);
+		}
+		else this.now++;
+		this.ani();
+	}
+
+	Slide.prototype.onInterval = function(){
+		this.$btnNext.trigger("click");
+	}
+
+	Slide.prototype.onMouseOver = function(){
+		clearInterval(this.interval);
+	}
+	Slide.prototype.onMouseLeave = function(){
+		this.interval = setInterval(this.onInterval.bind(this), this.gapSpeed);
+	}
+
+	Slide.prototype.ani= function() {
+		this.$wrapper.stop().animate({"left": -100*this.now + "%"}, this.aniSpeed);
+	}
+
+	//bvh js event n event ob-t bdag. 

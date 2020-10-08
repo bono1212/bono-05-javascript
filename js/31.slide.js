@@ -7,9 +7,9 @@ new Slide({
 	aniSpeed: 750			 //500(def)
 });
 
-new Slide({
+/* new Slide({
 	slide: ['../img/home-2.jpg', '../img/home-3.jpg', '../img/home-4.jpg'],
 	container: ".prd-stage",
 	direction: "fade", //hori(default), vert, fade
 	autoStart: true,   //false(def), true
-});
+}); */
