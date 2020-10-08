@@ -39,7 +39,7 @@ Slide.prototype.init = function(){
 	this.$btnNext.click(this.onNextClick.bind(this));
 	this.$container.mouseover(this.onMouseOver.bind(this));
 	this.$container.mouseleave(this.onMouseLeave.bind(this));
-	this.interval = setInterval(this.onInterval.bind(this), this.gapSpeed);
+	if(this.autoStart) this.interval = setInterval(this.onInterval.bind(this), this.gapSpeed);
 	
 	this.startInit();
 }
@@ -71,10 +71,10 @@ Slide.prototype.init = function(){
 	}
 
 	Slide.prototype.onMouseOver = function(){
-		clearInterval(this.interval);
+		if(this.autoStart) clearInterval(this.interval);
 	}
 	Slide.prototype.onMouseLeave = function(){
-		this.interval = setInterval(this.onInterval.bind(this), this.gapSpeed);
+		if(this.autoStart) this.interval = setInterval(this.onInterval.bind(this), this.gapSpeed);
 	}
 
 	Slide.prototype.ani= function() {

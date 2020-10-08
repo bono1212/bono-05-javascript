@@ -1,4 +1,4 @@
-.bono-wrapper {width: 100%; position: absolute;}
+.bono-wrapper {width: 100%; position: absolute; top: 0; left: 0;}
 .bono-wrapper .img {width: 100%;}
 .bono-wrapper.bono-hori {display: flex;}
 .bono-wrapper.bono-vert {position: absolute;}
