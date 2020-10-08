@@ -1,7 +1,7 @@
-.bono-wrapper {width: 100%; position: relative;}
+.bono-wrapper {width: 100%; position: absolute;}
 .bono-wrapper .img {width: 100%;}
 .bono-wrapper.bono-hori {display: flex;}
-.bono-wrapper.bono-vert {}
+.bono-wrapper.bono-vert {position: absolute;}
 .bono-wrapper.bono-fade {}
 .bono-wrapper.bono-hori .bono-slide {flex: 100% 0 0;}
 .bono-wrapper.bono-vert .bono-slide {}

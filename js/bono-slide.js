@@ -32,6 +32,8 @@ Slide.prototype.init = function(){
 	this.last = this.$slides.length - 1;
 	this.$btnPrev = $('<div class="bono-btn bono-prev">〈</div>').appendTo(this.$container);
 	this.$btnNext = $('<div class="bono-btn bono-next">〉</div>').appendTo(this.$container);
+	html = '<img src="'+this.slide[0]+'" style="width: 100%; opacity: 0;">';
+	this.$container.append(html);
 
 	this.$btnPrev.click(this.onPrevClick.bind(this)); //묶다 derh this bish oorig n zaj ogch bna
 	this.$btnNext.click(this.onNextClick.bind(this));
@@ -49,7 +51,7 @@ Slide.prototype.init = function(){
 	Slide.prototype.onPrevClick = function(e){
 		if(this.now == 0) {
 			this.now = this.last - 1; 
-			this.$wrapper.css("left", -100*this.last+"%");
+			this.$wrapper.css(this.$direction === 'hori' ? 'left': 'top', -100*this.last+"%");
 		}
 		else this.now--;
 		this.ani();
@@ -58,7 +60,7 @@ Slide.prototype.init = function(){
 	Slide.prototype.onNextClick = function(){
 		if(this.now == this.last) {
 			this.now = 1; 
-			this.$wrapper.css("left", 0);
+			this.$wrapper.css(this.$direction === 'hori' ? 'left': 'top', 0);
 		}
 		else this.now++;
 		this.ani();
@@ -80,8 +82,7 @@ Slide.prototype.init = function(){
 			this.$wrapper.stop().animate({"left": -100*this.now + "%"}, this.aniSpeed);
 		}
 		else if (this.direction === 'vert') {
-			var hei = this.$slides[0].outerHeight();
-			this.$wrapper.stop().animate({"top": -hei*this.now + "px"}, this.aniSpeed);
+			this.$wrapper.stop().animate({"top": -100*this.now + "%"}, this.aniSpeed); 
 		}
 	}
 
