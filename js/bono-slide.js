@@ -22,17 +22,20 @@ Slide.prototype.init = function(){
 	html = '<div class="bono-slide">';
 	html += '<img src="'+this.slide[i]+'" class="img">';
 	html += '</div>';
-	this.$slides.push($(html).appendTo(this.$wrapper));
+	if(this.direction === 'hori' || this.direction === 'vert') {
+		this.$slides.push($(html).appendTo(this.$wrapper));
+	}
+	if(this.direction === 'fade') this.$slides.push($(html));
 	}
 
 	if(this.direction === 'hori' || this.direction === 'vert') {
 		this.$slides.push($(this.$slides[0].clone()).appendTo(this.$wrapper));
 	}
-
+	if(this.direction === 'fade') $(this.$slides[0].clone()).appendTo(this.$wrapper);
 	this.last = this.$slides.length - 1;
 	this.$btnPrev = $('<div class="bono-btn bono-prev">〈</div>').appendTo(this.$container);
 	this.$btnNext = $('<div class="bono-btn bono-next">〉</div>').appendTo(this.$container);
-	html = '<img src="'+this.slide[0]+'" style="width: 100%; opacity: 0;">';
+	html = '<img src="'+this.slide[0]+'" style="width: 100%; opacity: 1;">';
 	this.$container.append(html);
 
 	this.$btnPrev.click(this.onPrevClick.bind(this)); //묶다 derh this bish oorig n zaj ogch bna
@@ -50,17 +53,23 @@ Slide.prototype.init = function(){
 
 	Slide.prototype.onPrevClick = function(e){
 		if(this.now == 0) {
-			this.now = this.last - 1; 
-			this.$wrapper.css(this.$direction === 'hori' ? 'left': 'top', -100*this.last+"%");
+			if(this.direction === 'hori' || this.direction === 'vert') {
+				this.now = this.last - 1; 
+				this.$wrapper.css(this.$direction === 'hori' ? 'left': 'top', -100*this.last+"%");
 		}
+		if (this.direction === 'fade')	this.now = this.last;
+	}
 		else this.now--;
 		this.ani();
 	}
 		
 	Slide.prototype.onNextClick = function(){
 		if(this.now == this.last) {
-			this.now = 1; 
-			this.$wrapper.css(this.$direction === 'hori' ? 'left': 'top', 0);
+			if(this.direction === 'hori' || this.direction === 'vert') {
+				this.now = 1; 
+				this.$wrapper.css(this.$direction === 'hori' ? 'left': 'top', 0);
+			}
+			if (this.direction === 'fade')	this.now = 0;
 		}
 		else this.now++;
 		this.ani();
@@ -81,8 +90,17 @@ Slide.prototype.init = function(){
 		if(this.direction === 'hori') {
 			this.$wrapper.stop().animate({"left": -100*this.now + "%"}, this.aniSpeed);
 		}
-		else if (this.direction === 'vert') {
+		if (this.direction === 'vert') {
 			this.$wrapper.stop().animate({"top": -100*this.now + "%"}, this.aniSpeed); 
+		}
+		if(this.direction === 'fade') {
+			$(this.$slides[this.now].clone())
+			.appendTo(this.$wrapper)
+			.css("opacity", 0)
+			.stop()
+			.animate({"opacity": 1}, this.aniSpeed, function(){
+				$(this).prev().remove();
+			});
 		}
 	}
 
