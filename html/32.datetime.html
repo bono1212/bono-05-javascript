@@ -56,5 +56,14 @@
 
 	// moment 우리나라 표기로 변경하기
 	moment.locale('ko');
-	console.log(	moment().format('llll')	);
+	console.log(moment().format('LT')	);   // 오후 2:33
+	console.log(moment().format('LTS')	); // 오후 2:33:55
+	console.log(moment().format('L')	);   // 2020.10.12.
+	console.log(moment().format('LL')	);   // 2020년 10월 12일
+	console.log(moment().format('LLL')	); // 2020년 10월 12일 오후 2:33
+	console.log(moment().format('LLLL')	); // 2020년 10월 12일 월요일 오후 2:35
+
+	//moment ISO 표기로 변경
+	console.log( moment().format('YYYY-MM-DD HH:mm:ss'));
+	console.log( moment().format('YYYY년 MM월 DD일 HH시 mm분 ss초'));
 </script>
