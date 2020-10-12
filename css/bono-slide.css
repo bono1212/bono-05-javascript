@@ -11,3 +11,8 @@
 .bono-btn:hover {opacity: 1;}
 .bono-btn.bono-prev {left: 1rem;}
 .bono-btn.bono-next {right: 1rem;}
+
+.bono-pagers {display: flex; justify-content: center; align-items: center; position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); z-index: 9999;}
+.bono-pager {user-select: none; width: 40px; margin: 0 4px; cursor: pointer;}
+.bono-pager::before {display: block; content: ""; height: 3px; background-color: #fff; margin: 10px 0; box-shadow: 0 0 0.625rem rgba(0,0,0,0.5);}
+.bono-pager.active::before {background-color: orangered;}

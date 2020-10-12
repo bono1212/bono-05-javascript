@@ -4,105 +4,126 @@ var Slide = function(arg) {
 	this.container = arg.container;
 	this.$container = $(this.container);
 	this.direction = arg.direction || 'hori';
-	this.autoStart = arg.autoStart || false;
 	this.gapSpeed = arg.gapSpeed || 3000;
 	this.aniSpeed = arg.aniSpeed || 500;
-	this.$container.css({"position": "relative", "overflow": "hidden"});
-	this.$wrapper = $('<div class="bono-wrapper bono-'+this.direction+'"></div>').appendTo(this.$container);
-	this.now = 0;
-	this.last = this.slide.length - 1;
+	this.autoUse = arg.autoUse || false;
+	this.btnUse = arg.btnUse || true;
+	this.pagerUse = arg.pagerUse || false;
 	
 	this.init();
 	return this;
 }
 
 Slide.prototype.init = function(){
-	var html = '';
-	for(var i=0, html=''; i<this.slide.length; i++) {
-	html = '<div class="bono-slide">';
-	html += '<img src="'+this.slide[i]+'" class="img">';
-	html += '</div>';
-	if(this.direction === 'hori' || this.direction === 'vert') {
-		this.$slides.push($(html).appendTo(this.$wrapper));
-	}
-	if(this.direction === 'fade') this.$slides.push($(html));
-	}
 
+	this.$container.css({"position": "relative", "overflow": "hidden"});
+	this.$wrapper = $('<div class="bono-wrapper bono-'+this.direction+'"></div>').appendTo(this.$container);
+	this.now = 0;
+
+	for(var i=0, html=''; i<this.slide.length; i++) {
+		html  = '<div class="bono-slide">';
+		html += '<img src="'+this.slide[i]+'" class="img">';
+		html += '</div>';
+		if(this.direction === 'hori' || this.direction === 'vert') {
+			this.$slides.push($(html).appendTo(this.$wrapper));
+		}
+		if(this.direction === 'fade') this.$slides.push($(html));
+	}
 	if(this.direction === 'hori' || this.direction === 'vert') {
 		this.$slides.push($(this.$slides[0].clone()).appendTo(this.$wrapper));
 	}
 	if(this.direction === 'fade') $(this.$slides[0].clone()).appendTo(this.$wrapper);
 	this.last = this.$slides.length - 1;
-	this.$btnPrev = $('<div class="bono-btn bono-prev">〈</div>').appendTo(this.$container);
-	this.$btnNext = $('<div class="bono-btn bono-next">〉</div>').appendTo(this.$container);
-	html = '<img src="'+this.slide[0]+'" style="width: 100%; opacity: 1;">';
+
+	if(this.btnUse) {
+		this.$btnPrev = $('<div class="bono-btn bono-prev">〈</div>').appendTo(this.$container);
+		this.$btnNext = $('<div class="bono-btn bono-next">〉</div>').appendTo(this.$container);
+		this.$btnPrev.click(this.onPrevClick.bind(this));
+		this.$btnNext.click(this.onNextClick.bind(this));
+	}
+
+	if(this.pagerUse) {
+		this.$pagers = $('<div class="bono-pagers"></div>').appendTo(this.$container);
+		for(var i in this.slide) {
+			$('<div class="bono-pager"></div>').appendTo(this.$pagers).click(this.onPagerClick.bind(this));
+		}
+		this.$pagers.find(".bono-pager").eq(0).addClass("active");
+	}
+
+	if(this.autoUse) {
+		this.$container.mouseover(this.onMouseOver.bind(this));
+		this.$container.mouseleave(this.onMouseLeave.bind(this));
+		this.interval = setInterval(this.onInterval.bind(this), this.gapSpeed);
+	}
+
+
+	html = '<img src="'+this.slide[0]+'" style="width: 100%; opacity: 0;">';
 	this.$container.append(html);
 
-	this.$btnPrev.click(this.onPrevClick.bind(this)); //묶다 derh this bish oorig n zaj ogch bna
-	this.$btnNext.click(this.onNextClick.bind(this));
-	this.$container.mouseover(this.onMouseOver.bind(this));
-	this.$container.mouseleave(this.onMouseLeave.bind(this));
-	if(this.autoStart) this.interval = setInterval(this.onInterval.bind(this), this.gapSpeed);
-	
 	this.startInit();
 }
 
-	Slide.prototype.startInit = function(){
-		
-	}
+Slide.prototype.startInit = function() {
 
-	Slide.prototype.onPrevClick = function(e){
-		if(this.now == 0) {
-			if(this.direction === 'hori' || this.direction === 'vert') {
-				this.now = this.last - 1; 
-				this.$wrapper.css(this.$direction === 'hori' ? 'left': 'top', -100*this.last+"%");
-		}
-		if (this.direction === 'fade')	this.now = this.last;
-	}
-		else this.now--;
-		this.ani();
-	}
-		
-	Slide.prototype.onNextClick = function(){
-		if(this.now == this.last) {
-			if(this.direction === 'hori' || this.direction === 'vert') {
-				this.now = 1; 
-				this.$wrapper.css(this.$direction === 'hori' ? 'left': 'top', 0);
-			}
-			if (this.direction === 'fade')	this.now = 0;
-		}
-		else this.now++;
-		this.ani();
-	}
+}
 
-	Slide.prototype.onInterval = function(){
-		this.$btnNext.trigger("click");
-	}
-
-	Slide.prototype.onMouseOver = function(){
-		if(this.autoStart) clearInterval(this.interval);
-	}
-	Slide.prototype.onMouseLeave = function(){
-		if(this.autoStart) this.interval = setInterval(this.onInterval.bind(this), this.gapSpeed);
-	}
-
-	Slide.prototype.ani= function() {
-		if(this.direction === 'hori') {
-			this.$wrapper.stop().animate({"left": -100*this.now + "%"}, this.aniSpeed);
+Slide.prototype.onPrevClick= function(e) {
+	if(this.now == 0) {
+		if(this.direction === 'hori' || this.direction === 'vert') {
+			this.now = this.last - 1;
+			this.$wrapper.css(this.direction === 'hori'?'left':'top', -100*this.last+"%");
 		}
-		if (this.direction === 'vert') {
-			this.$wrapper.stop().animate({"top": -100*this.now + "%"}, this.aniSpeed); 
-		}
-		if(this.direction === 'fade') {
-			$(this.$slides[this.now].clone())
-			.appendTo(this.$wrapper)
-			.css("opacity", 0)
-			.stop()
-			.animate({"opacity": 1}, this.aniSpeed, function(){
-				$(this).prev().remove();
-			});
-		}
+		if(this.direction === 'fade') this.now = this.last;
 	}
+	else this.now--;
+	this.ani();
+}
 
-	//bvh js event n event ob-t bdag. 
-	// vert n % heregjihq (px) bh heregt
+Slide.prototype.onNextClick = function() {
+	if(this.now == this.last) {
+		if(this.direction === 'hori' || this.direction === 'vert') {
+			this.now = 1;
+			this.$wrapper.css(this.direction === 'hori'?'left':'top', 0);
+		}
+		if(this.direction === 'fade') this.now = 0;
+	}
+	else this.now++;
+	this.ani();
+}
+
+Slide.prototype.onPagerClick =  function(e) {
+	this.now = $(e.currentTarget).index();
+	this.ani();
+}
+
+Slide.prototype.onInterval = function() {
+	this.$btnNext.trigger("click");
+}
+
+Slide.prototype.onMouseOver = function() {
+	clearInterval(this.interval);	
+}
+Slide.prototype.onMouseLeave = function() {
+	this.interval = setInterval(this.onInterval.bind(this), this.gapSpeed);
+}
+
+Slide.prototype.ani = function() {
+	if(this.pagerUse) {
+		this.$pagers.find(".bono-pager").eq(this.now).addClass("active").siblings().removeClass("active");
+	}
+	if(this.direction === 'hori') {
+		this.$wrapper.stop().animate({"left": -100*this.now+"%"}, this.aniSpeed);
+	}
+	if(this.direction === 'vert') {
+		this.$wrapper.stop().animate({"top": -100*this.now+"%"}, this.aniSpeed);
+	}
+	if(this.direction === 'fade') {
+		$(this.$slides[this.now].clone())
+		.appendTo(this.$wrapper)
+		.css("opacity", 0)
+		.stop()
+		.animate({"opacity": 1}, this.aniSpeed, function(){
+			$(this).prev().remove();
+		});
+	}
+}
