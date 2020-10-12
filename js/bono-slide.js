@@ -1,5 +1,7 @@
 var Slide = function(arg) {
 	this.slide = arg.slide;
+	this.title = arg.slideTitle || null;
+	if(this.title) this.title.push(this.title[0]);
 	this.$slides = [];
 	this.container = arg.container;
 	this.$container = $(this.container);
@@ -23,6 +25,7 @@ Slide.prototype.init = function(){
 	for(var i=0, html=''; i<this.slide.length; i++) {
 		html  = '<div class="bono-slide">';
 		html += '<img src="'+this.slide[i]+'" class="img">';
+		if(this.title && this.title[i]) html += this.title[i];
 		html += '</div>';
 		if(this.direction === 'hori' || this.direction === 'vert') {
 			this.$slides.push($(html).appendTo(this.$wrapper));
@@ -110,6 +113,9 @@ Slide.prototype.onMouseLeave = function() {
 Slide.prototype.ani = function() {
 	if(this.pagerUse) {
 		this.$pagers.find(".bono-pager").eq(this.now).addClass("active").siblings().removeClass("active");
+		if(this.direction === 'hori' || this.direction === 'vert') {
+			if(this.now == this.last) this.$pagers.find(".bono-pager").eq(0).addClass("active").siblings().removeClass("active");
+		}
 	}
 	if(this.direction === 'hori') {
 		this.$wrapper.stop().animate({"left": -100*this.now+"%"}, this.aniSpeed);
