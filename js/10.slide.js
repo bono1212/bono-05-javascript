@@ -338,7 +338,7 @@
 		$pager = $pagerWrap.find(".pager");
 		$pager.click(onPagerClick).eq(idx).addClass("active");
 		slideInit();
-		//interval = setInterval(onNext, 3000);
+		interval = setInterval(onNext, 3000);
 	}
 
 	function slideInit() {
