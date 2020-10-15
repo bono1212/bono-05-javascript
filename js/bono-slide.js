@@ -28,19 +28,19 @@ var Slide = function(arg) {
 Slide.prototype.init = function(){
 
 	// 사용자가 지정한 stage에 css 적용
-	this.$container.css({
-		"position": "relative",
-		"overflow": "hidden"
-	});
+	this.$container.css({"position": "relative", "overflow": "hidden"});
 
 	// stage에 슬라이드 감싸는 bono-wrapper를 생성
 	this.$wrapper = $('<div class="bono-wrapper bono-'+this.direction+'"></div>').appendTo(this.$container);
 	
 	//bono-wrapper에 bono-slide들을 만드는 과정
 	for(var i=0, html=''; i<this.slide.length; i++) {
-		html  = '<div class="bono-slide">';
+		if(this.direction == 'step')
 		html  = '<div class="bono-slide" style="background-image: url(\''+this.slide[i]+'\');">';
+		else
+		html  = '<div class="bono-slide">';
 		html += '<img src="'+this.slide[i]+'" class="w100">';
+
 		if(this.title && this.title[i]) html += this.title[i];
 		html += '</div>';
 
@@ -48,7 +48,7 @@ Slide.prototype.init = function(){
 		// 1. 실제태그도 붙이고 
 		// 2. this.$slides배열에도 추가한다.
 		if(this.direction === 'hori' || this.direction === 'vert') {
-			this.$slides.push($(html).appendTo(this.$wrapper));
+		this.$slides.push($(html).appendTo(this.$wrapper));
 		}
 		
 		//fade형은 this.$slides만 태그를 넣어놓는다.
@@ -106,25 +106,25 @@ Slide.prototype.init = function(){
 	}
 	else {
 		this.startInit();
-			$(window).resize(function () {
-					var w = $(window).innerWidth();
-					var cnt = this.slideCnt;
-					if(w > 1199) this.stepCalc(cnt);
-					if(w <= 1199 && w > 991) this.stepCalc(cnt - 1 < 1 ? 1 : cnt - 1);
-					if(w <= 991 && w > 767) this.stepCalc(cnt - 2 < 1 ? 1 : cnt - 2);
-					if(w <= 767 && w > 575) this.stepCalc(cnt - 3 < 1 ? 1 : cnt - 3);
-					if(w <= 575) this.stepCalc(cnt - 4 < 1 ? 1 : cnt - 4);
+		$(window).resize(function () {
+			var w = $(window).innerWidth();
+			var cnt = this.slideCnt;
+			if(w > 1199) this.stepCalc(cnt);
+			if(w <= 1199 && w > 991) this.stepCalc(cnt - 1 < 1 ? 1 : cnt - 1);
+			if(w <= 991 && w > 767) this.stepCalc(cnt - 2 < 1 ? 1 : cnt - 2);
+			if(w <= 767 && w > 575) this.stepCalc(cnt - 3 < 1 ? 1 : cnt - 3);
+			if(w <= 575) this.stepCalc(cnt - 4 < 1 ? 1 : cnt - 4);
 					
-					this.$wrapper.css({
-						"left": this.slideValue.leftValue + "%",
-						"width": this.slideValue.parentWidth + "%",
-					});
-					this.$wrapper.find('.bono-slide').css({
-						"flex": "calc(" + this.slideValue.childWidth + "% - " + this.slideMargin + "px) 0 0",
-						"margin": "0 " + this.slideMargin / 2 + "px"
-					});
-				}.bind(this)).trigger("resize");
-		}
+			this.$wrapper.css({
+			"left": this.slideValue.leftValue + "%",
+			"width": this.slideValue.parentWidth + "%",
+	});
+			this.$wrapper.find('.bono-slide').css({
+			"flex": "calc(" + this.slideValue.childWidth + "% - " + this.slideMargin + "px) 0 0",
+			"margin": "0 " + this.slideMargin / 2 + "px"
+	});
+		}.bind(this)).trigger("resize");
+	}
 }
 
 Slide.prototype.startInit = function() {
