@@ -3,11 +3,17 @@
 	var aaaaa = 10;
 	function bbbbb() {
 		console.log(this);
+		var a = 10;
 	}
 	bbbbb();
+	this.bbbbb();
+	window.bbbbb();
 
 	console.log(aaaaa);
 	console.log(this.aaaaa);
 	console.log(window.aaaaa);
+
+	console.clear();
+
 
 </script>
