@@ -1,16 +1,17 @@
-var Slide = function(arg) {
+var Slide = function(arg) {													// 이미지 경로
 	this.slide = arg.slide;
 	this.title = arg.slideTitle || null;
 	if(this.title) this.title.push(this.title[0]);
-	this.$slides = [];
-	this.container = arg.container;
-	this.$container = $(this.container);
-	this.direction = arg.direction || 'hori';
-	this.gapSpeed = arg.gapSpeed || 3000;
-	this.aniSpeed = arg.aniSpeed || 500;
-	this.autoUse = arg.autoUse || false;
-	this.btnUse = arg.btnUse || true;
-	this.pagerUse = arg.pagerUse || false;
+	this.$slides = [];																//생성될 .bono-slide
+	this.container = arg.container;										// 사용자가 만든 html (여기에 모든 내용 담김) 
+	this.$container = $(this.container);							// 사용자가 만든 html Jquery 객체로 만듬
+	this.direction = arg.direction || 'hori';					// slide type (hori/vert/fade/step)
+	this.gapSpeed = arg.gapSpeed || 3000;							// 자동실행 (interval) 간격
+	this.aniSpeed = arg.aniSpeed || 500;							//animation speed
+	this.autoUse = arg.autoUse || false;							//자동실행 여부
+	this.btnUse = arg.btnUse || true;									//좌, 우 btn 
+	this.pagerUse = arg.pagerUse || false;						//pager 사용 
+	this.slideCnt = arg.slideCnt || 4;								//step slide (show on display)
 	
 	this.init();
 	return this;
@@ -136,7 +137,6 @@ Slide.prototype.ani = function() {
 
 
 (function(){
-	/*********** 전역변수 선언 ***********/
 	var datas = [
 		{ id: 0, src: '../img/lx-1-0.jpg', title: '침대1' },
 		{ id: 1, src: '../img/lx-1-1.jpg', title: '침대2' },

@@ -55,5 +55,5 @@ new Slide({
 	autoUse: true,			// false(default), true
 	btnUse: true,				// true(default), false
 	pagerUse: true,			// false(default), true
-	viewCount: 6, 			//
+	slideCnt: 5, 			//
 });
