@@ -1,9 +1,12 @@
+<div class="lalala">lalala</div>
+<script src="../js/jquery-3.5.1.min.js"></script>
 <script>
 	console.log(this);
 	var aaaaa = 10;
 	function bbbbb() {
 		console.log(this);
 		var a = 10;
+		this.a = 20;
 	}
 	bbbbb();
 	this.bbbbb();
@@ -14,6 +17,23 @@
 	console.log(window.aaaaa);
 
 	console.clear();
+	var obj = {
+		a: "A",
+		b: function(){
+			console.log(this);
+		} 
+	}
 
+	obj.b();
+
+	$(".lalala").click(function(){
+		console.log(this);
+	}.bind(this)); 
+
+	var lalala = {
+		click: function(fn) {
+			console.log(this);
+		}
+	}
 
 </script>

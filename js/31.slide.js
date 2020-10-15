@@ -35,7 +35,7 @@ new Slide({
 
 
 new Slide({
-	slide: ['../img/slide-0.jpg', '../img/slide-1.jpg', '../img/slide-2.jpg', '../img/slide-3.jpg', 'home-1a.jpg', 'home-1a.jpg', 'home-1a.jpg','home-1a.jpg','home-1a.jpg','home-1a.jpg', 'home-1a.jpg',],
+	slide: ['../img/slide-0.jpg', '../img/slide-1.jpg', '../img/slide-2.jpg', '../img/slide-3.jpg', '../img/home-1a.jpg', '../img/home-1a.jpg', '../img/home-1a.jpg', '../img/home-1a.jpg', '../img/home-1a.jpg', '../img/home-1a.jpg', '../img/home-1a.jpg',],
 	slideTitle: [
 		'<div class="title">1</div>',
 		'<div class="title">2</div>',
@@ -55,5 +55,6 @@ new Slide({
 	autoUse: true,			// false(default), true
 	btnUse: true,				// true(default), false
 	pagerUse: true,			// false(default), true
-	slideCnt: 5, 			//
+	slideCnt: 5, 				// 5(default)
+	slideMargin: 16			// 0(dedault), px 단위
 });
