@@ -1,11 +1,15 @@
 .bono-wrapper {width: 100%; position: absolute; top: 0; left: 0;}
-.bono-wrapper .img {width: 100%;}
+.bono-wrapper .w100 {width: 100%; height: auto;}
+.bono-wrapper .h100 {height: 100%; width: auto;}
 .bono-wrapper.bono-hori {display: flex;}
 .bono-wrapper.bono-vert {}
 .bono-wrapper.bono-fade {}
+.bono-wrapper.bono-step {position: relative; display: flex; }
 .bono-wrapper.bono-hori .bono-slide {flex: 100% 0 0; position: relative;}
 .bono-wrapper.bono-vert .bono-slide {position: relative;}
 .bono-wrapper.bono-fade .bono-slide {position: absolute; width: 100%;}
+.bono-wrapper.bono-step .bono-slide {background-repeat: no-repeat; background-size: cover; background-position: center;}
+.bono-wrapper.bono-step.bono-slide > img.w100 {opacity: 0;}
 
 .bono-slide > div {position: absolute; color:#fff; font-size: 2rem; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; user-select: none; top: 0; left: 0;}
 

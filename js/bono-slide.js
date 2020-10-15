@@ -10,7 +10,6 @@ var Slide = function(arg) {
 	this.autoUse = arg.autoUse || false;						// 자동실행 여부
 	this.btnUse = arg.btnUse || true;								// 좌, 우 버튼 사용 여부
 	this.pagerUse = arg.pagerUse || false;					// 페이저 사용 여부
-	this.slideCnt = arg.slideCnt || 4;							// step형에서 화면에 보여질 슬라이드 개수
 	this.now = 0;																		// 선택된 슬라이드 index
 	this.last = 0;																	// 슬라이드 중 마지막 index
 	this.$btnNext = null;														// Next 버튼
@@ -18,21 +17,30 @@ var Slide = function(arg) {
 	this.$pagers = null;														// pager-wrapper
 	this.interval = null;														// interval이 담길 변수
 	
+	this.slideCnt = arg.slideCnt || 4;							// step형에서 화면에 보여질 슬라이드 개수
+	this.slideMargin = arg.slideMargin || 0 				// step형에서 슬라이드의 가로마진 (px)
+	this.slideValue = {} 														// step형에서 슬라이드의 css 값
+
 	this.init();
 	return this;
 }
 
 Slide.prototype.init = function(){
-	
+
 	// 사용자가 지정한 stage에 css 적용
-	this.$container.css({"position": "relative", "overflow": "hidden"});
+	this.$container.css({
+		"position": "relative",
+		"overflow": "hidden"
+	});
+
 	// stage에 슬라이드 감싸는 bono-wrapper를 생성
 	this.$wrapper = $('<div class="bono-wrapper bono-'+this.direction+'"></div>').appendTo(this.$container);
 	
 	//bono-wrapper에 bono-slide들을 만드는 과정
 	for(var i=0, html=''; i<this.slide.length; i++) {
 		html  = '<div class="bono-slide">';
-		html += '<img src="'+this.slide[i]+'" class="img">';
+		html  = '<div class="bono-slide" style="background-image: url(\''+this.slide[i]+'\');">';
+		html += '<img src="'+this.slide[i]+'" class="w100">';
 		if(this.title && this.title[i]) html += this.title[i];
 		html += '</div>';
 
@@ -44,7 +52,7 @@ Slide.prototype.init = function(){
 		}
 		
 		//fade형은 this.$slides만 태그를 넣어놓는다.
-		if(this.direction === 'fade') this.$slides.push($(html));
+		if(this.direction === 'fade' || this.direction == 'step') this.$slides.push($(html));
 	}
 	//for 끝
 
@@ -63,7 +71,6 @@ Slide.prototype.init = function(){
 	if(this.btnUse) {
 		this.$btnPrev = $('<div class="bono-btn bono-prev">〈</div>').appendTo(this.$container);
 		this.$btnNext = $('<div class="bono-btn bono-next">〉</div>').appendTo(this.$container);
-
 		//click(cb) 안에의 콜백함수(cb) this가 클릭메서드의 객체이므로 bind(this)를 통해서 Slide자신을 보낸다.
 		this.$btnPrev.click(this.onPrevClick.bind(this));    
 		this.$btnNext.click(this.onNextClick.bind(this)); 
@@ -92,14 +99,36 @@ Slide.prototype.init = function(){
 		this.$container.mouseleave(this.onMouseLeave.bind(this)).trigger("mouseleave");
 	}
 
+	if(this.direction !== 'step'){
 	// 보이지 않으나 이미지 하나를 this.$container에 붙여서 높이를 생성한다. 
 	html = '<img src="'+this.slide[0]+'" style="width: 100%; opacity: 0;">';
 	this.$container.append(html);
-
-	this.startInit();
+	}
+	else {
+		this.startInit();
+			$(window).resize(function () {
+					var w = $(window).innerWidth();
+					var cnt = this.slideCnt;
+					if(w > 1199) this.stepCalc(cnt);
+					if(w <= 1199 && w > 991) this.stepCalc(cnt - 1 < 1 ? 1 : cnt - 1);
+					if(w <= 991 && w > 767) this.stepCalc(cnt - 2 < 1 ? 1 : cnt - 2);
+					if(w <= 767 && w > 575) this.stepCalc(cnt - 3 < 1 ? 1 : cnt - 3);
+					if(w <= 575) this.stepCalc(cnt - 4 < 1 ? 1 : cnt - 4);
+					
+					this.$wrapper.css({
+						"left": this.slideValue.leftValue + "%",
+						"width": this.slideValue.parentWidth + "%",
+					});
+					this.$wrapper.find('.bono-slide').css({
+						"flex": "calc(" + this.slideValue.childWidth + "% - " + this.slideMargin + "px) 0 0",
+						"margin": "0 " + this.slideMargin / 2 + "px"
+					});
+				}.bind(this)).trigger("resize");
+		}
 }
 
 Slide.prototype.startInit = function() {
+	$(this.$slides[this.now].clone()).appendTo(this.$wrapper.empty().attr("style", ""));
 }
 
 // prev btn click event callback
@@ -174,3 +203,8 @@ Slide.prototype.ani = function() {
 	}
 }
 
+Slide.prototype.stepCalc = function(cnt) {
+	this.slideValue.leftValue = (-100 / cnt).toFixed(4);
+	this.slideValue.parentWidth = (Math.abs(this.slideValue.leftValue) * 2 + 100).toFixed(4);
+	this.slideValue.childWidth = (100 / (cnt + 2)).toFixed(4);
+}
