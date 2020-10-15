@@ -1,29 +1,29 @@
-var Slide = function(arg) {													
-	this.slide = arg.slide;														// 이미지 경로 (배열)
-	this.title = arg.slideTitle || null;							// 타이틀 내용 (배열)
-	this.$slides = [];																// 생성될 .bono-slide(jQuery객체)를 저장할 배열
-	this.container = arg.container;										// 사용자가 만든 html (여기에 모든 내용 담김) 
-	this.$container = $(this.container);							// 사용자가 만든 html Jquery 객체로 만듬
-	this.direction = arg.direction || 'hori';					// slide type (hori/vert/fade/step)
-	this.gapSpeed = arg.gapSpeed || 3000;							// 자동실행 (interval) 간격
-	this.aniSpeed = arg.aniSpeed || 500;							// animation speed
-	this.autoUse = arg.autoUse || false;							// 자동실행 여부
-	this.btnUse = arg.btnUse || true;									// 좌, 우 btn 
-	this.pagerUse = arg.pagerUse || false;						// pager 사용 
-	this.slideCnt = arg.slideCnt || 4;								// step slide (show on display)
-	this.now = 0;																			// 선택된 슬라이드 index
-	this.last = 0;																		// 슬라이드 중 마지막 index
-	this.$btnNext = null;															//next btn
-	this.$btnPrev = null;															//prev btn
-	this.$pagers = null;															//pager group (pager-wrapper)
-	this.$pager = null;																//pager (배열)
-	this.interval = null;															// interval 담길 함수
-
+var Slide = function(arg) {
+	this.slide = arg.slide;													// 이미지 경로(배열)
+	this.title = arg.slideTitle || null;						// 타이틀 내용(배열)
+	this.$slides = [];															// 생성될 .booldook-slide(jQuery객체)를 저장할 배열
+	this.container = arg.container;									// 사용자가 만든 html(여기에 모든 내용이 담김)
+	this.$container = $(this.container);						// 사용자가 만든 html을 jQuery객체로 만듬
+	this.direction = arg.direction || 'hori';				// 슬라이드 타입(hori|vert|fade|step)
+	this.gapSpeed = arg.gapSpeed || 3000;						// 자동실행(interval) 간격
+	this.aniSpeed = arg.aniSpeed || 500;						// 애니메이션 속도
+	this.autoUse = arg.autoUse || false;						// 자동실행 여부
+	this.btnUse = arg.btnUse || true;								// 좌, 우 버튼 사용 여부
+	this.pagerUse = arg.pagerUse || false;					// 페이저 사용 여부
+	this.slideCnt = arg.slideCnt || 4;							// step형에서 화면에 보여질 슬라이드 개수
+	this.now = 0;																		// 선택된 슬라이드 index
+	this.last = 0;																	// 슬라이드 중 마지막 index
+	this.$btnNext = null;														// Next 버튼
+	this.$btnPrev = null;														// Prev 버튼
+	this.$pagers = null;														// pager-wrapper
+	this.interval = null;														// interval이 담길 변수
+	
 	this.init();
 	return this;
 }
 
 Slide.prototype.init = function(){
+	
 	// 사용자가 지정한 stage에 css 적용
 	this.$container.css({"position": "relative", "overflow": "hidden"});
 	// stage에 슬라이드 감싸는 bono-wrapper를 생성
@@ -36,7 +36,10 @@ Slide.prototype.init = function(){
 		if(this.title && this.title[i]) html += this.title[i];
 		html += '</div>';
 
-			if(this.direction === 'hori' || this.direction === 'vert') {
+		// hori, vert 형은 booldook-wrapper에 실제 태그를 넣어놔야 되므로... 
+		// 1. 실제태그도 붙이고 
+		// 2. this.$slides배열에도 추가한다.
+		if(this.direction === 'hori' || this.direction === 'vert') {
 			this.$slides.push($(html).appendTo(this.$wrapper));
 		}
 		
@@ -46,13 +49,10 @@ Slide.prototype.init = function(){
 	//for 끝
 
 	//hori, vert 형은 bono-wrapper에 실제 태그를 넣어놔야 되므로 ...
-		//1. 실제태그도 붙이고
-		//2. this.$slides배열에도 추가한다.
 	if(this.direction === 'hori' || this.direction === 'vert') {
 		this.$slides.push($(this.$slides[0].clone()).appendTo(this.$wrapper));
 		if(this.title) this.title.push(this.title[0]);		// 타이틀 0번 마지막에 북제
 	}
-
 	//fade type은 0번 슬라이드를 bono-wrapper에 붙인다
 	if(this.direction === 'fade') $(this.$slides[0].clone()).appendTo(this.$wrapper);
 
@@ -72,18 +72,27 @@ Slide.prototype.init = function(){
 	//pager 생성 및 이벤트 적용
 	if(this.pagerUse) {
 		this.$pagers = $('<div class="bono-pagers"></div>').appendTo(this.$container);
+
+		// 각각의 pager를 생성하고 클릭 이벤트를 적용한다.
 		for(var i in this.slide) {
 			$('<div class="bono-pager"></div>').appendTo(this.$pagers).click(this.onPagerClick.bind(this));
 		}
+
+		// 0번 idx에 .active 클래스를 적용한다.
 		this.$pagers.find(".bono-pager").eq(0).addClass("active");
 	}
 
+	// 자동실행 적용 및 이벤트 등록
 	if(this.autoUse) {
+
+		// clearInterval()
 		this.$container.mouseover(this.onMouseOver.bind(this));
+
+		// setInterval()
 		this.$container.mouseleave(this.onMouseLeave.bind(this)).trigger("mouseleave");
 	}
 
-	// 보이지 않으나 이미지 
+	// 보이지 않으나 이미지 하나를 this.$container에 붙여서 높이를 생성한다. 
 	html = '<img src="'+this.slide[0]+'" style="width: 100%; opacity: 0;">';
 	this.$container.append(html);
 
@@ -106,6 +115,7 @@ Slide.prototype.onPrevClick= function(e) {
 	this.ani();
 }
 
+// next버튼 클릭이벤트 콜백
 Slide.prototype.onNextClick = function() {
 	if(this.now == this.last) {
 		if(this.direction === 'hori' || this.direction === 'vert') {
@@ -118,22 +128,28 @@ Slide.prototype.onNextClick = function() {
 	this.ani();
 }
 
+// pager버튼 클릭이벤트 콜백
 Slide.prototype.onPagerClick =  function(e) {
 	this.now = $(e.currentTarget).index();
 	this.ani();
 }
 
+// interval 이벤트 콜백
 Slide.prototype.onInterval = function() {
 	this.$btnNext.trigger("click");
 }
 
+// this.$container 의 mouseover이벤트 콜백
 Slide.prototype.onMouseOver = function() {
 	clearInterval(this.interval);	
 }
+
+// this.$container 의 mouseleave이벤트 콜백
 Slide.prototype.onMouseLeave = function() {
 	this.interval = setInterval(this.onInterval.bind(this), this.gapSpeed);
 }
 
+// booldook-wrapper의 animation
 Slide.prototype.ani = function() {
 	if(this.pagerUse) {
 		this.$pagers.find(".bono-pager").eq(this.now).addClass("active").siblings().removeClass("active");
